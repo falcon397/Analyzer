@@ -20,11 +20,13 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div id="pnlUpdate">
-            <asp:ListBox ID="lblError" runat="server"></asp:ListBox>
-            <div id="pnlTable"></div>
+        <div id="pnlMain" class="center">
+            <div id="pnlUpdate">
+                <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
+                <div id="pnlTable"></div>
+            </div>
+            <asp:Button ID="btnSubmit" runat="server" Text="Get Data" />
         </div>
-        <asp:Button ID="btnSubmit" runat="server" Text="Get Data" />
     </form>
 </body>
 </html>

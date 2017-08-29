@@ -13,9 +13,6 @@ $(document).ready(function () {
 });
 
 function GetAppData() {
-    var id = $('#txtCAPAppID').val().trim();
-    var license = $('#txtLicense').val().trim();
-    if (id != '' && license != '') {
         var data = {  };
         $.ajax({
             type: "POST",
@@ -30,11 +27,6 @@ function GetAppData() {
                 OnSuccess(response)
             }
         });
-    }
-    else {
-        OnError();
-        return false;
-    }
 }
 
 function OnSuccess(response) {
