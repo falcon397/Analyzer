@@ -21,6 +21,7 @@
 <body>
     <form id="form1" runat="server">
         <div id="pnlUpdate">
+            <asp:ListBox ID="lblError" runat="server"></asp:ListBox>
             <div id="pnlTable"></div>
         </div>
         <asp:Button ID="btnSubmit" runat="server" Text="Get Data" />

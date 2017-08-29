@@ -10,35 +10,16 @@ $(document).ready(function () {
 
     //Get date and set messages and input masks.
     var d = new Date().toLocaleDateString();
-    var textEnglish = "As of " + d + ", our records reflect the following status of your application:"
-    var textSpanish = "A partir de " + d + ", nuestros archivos indican el siguiente estado de su aplicación:"
-
-    $('#lblDate').text(function () { if (SPCheck()) return textSpanish; else return textEnglish });
-    $('#txtCAPAppID').inputmask("9{7}", { placeholder: "" });
-    $('#txtLicense').inputmask("X{1,7}", {
-        placeholder: "",
-        definitions: {
-            'X': {
-                validator: "[0-9A-Za-z]",
-                cardinality: 1,
-                casing: "upper"
-            }
-        }
-    });
 });
-
-function SPCheck() {
-    return window.location.href.toLowerCase().indexOf("capstatuschecksp") >= 0 ? true : false;
-}
 
 function GetAppData() {
     var id = $('#txtCAPAppID').val().trim();
     var license = $('#txtLicense').val().trim();
     if (id != '' && license != '') {
-        var data = { id: id, license: license, language: SPCheck() };
+        var data = {  };
         $.ajax({
             type: "POST",
-            url: "CAPStatusCheck.aspx/GetAppData",
+            url: "https://www.nastyfans.org/buys.csv",
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

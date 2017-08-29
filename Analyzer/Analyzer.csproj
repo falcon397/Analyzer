@@ -14,7 +14,7 @@
     <RootNamespace>Analyzer</RootNamespace>
     <AssemblyName>Analyzer</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -60,6 +60,7 @@
     <Content Include="Default.aspx" />
     <Content Include="script\bootstrap.min.js" />
     <Content Include="script\javascript.js" />
+    <Content Include="script\jquery.inputmask.bundle.js" />
     <Content Include="style\bootstrap.min.css" />
     <Content Include="style\style.css" />
     <Content Include="Web.config" />
@@ -97,7 +98,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51191</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:51191/</IISUrl>
+          <IISUrl>http://localhost/projects/Analyzer</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
