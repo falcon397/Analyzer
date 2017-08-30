@@ -10,23 +10,28 @@ $(document).ready(function () {
 
     //Get date and set messages and input masks.
     var d = new Date().toLocaleDateString();
+
+    //Disable form submit, this page solely relies on AJAX calls and JSON data, with jQuery updating the fields.
+    $('#Form1').submit(function () {
+        return false;
+    })
 });
 
+//Get the data with AJAX call.
 function GetAppData() {
-        var data = {  };
-        $.ajax({
-            type: "POST",
-            url: "https://www.nastyfans.org/buys.csv",
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                OnError()
-            },
-            success: function (response) {
-                OnSuccess(response)
-            }
-        });
+    var remoteURL = "https://www.nastyfans.org/buys.csv";
+    $.ajax({
+        type: "GET",
+        url: "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22" +
+            encodeURIComponent(remoteURL) + "%22&format=json",
+        dataType: "text/csv",
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            OnError()
+        },
+        success: function (response) {
+            OnSuccess(response)
+        }
+    });
 }
 
 function OnSuccess(response) {
@@ -53,8 +58,8 @@ function setData(response) {
 }
 
 function OnError() {
-    if ($("#jQueryUpdate").is(":visible")) {
-        $('#jQueryUpdate').slideUp(400);
+    if ($("#pnlError").is(":visible")) {
+        $('#pnlError').slideUp(400);
         window.setTimeout(function () {
             $('#lblError').fadeIn("slow");
         }, 650);
