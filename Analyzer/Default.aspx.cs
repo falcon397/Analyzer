@@ -20,7 +20,7 @@ namespace Analyzer
         public static string getData()
         {
             MySqlConnectionStringBuilder conn_string = new MySqlConnectionStringBuilder();
-            conn_string.Server = "192.168.1.2";
+            conn_string.Server = "www.huckshome.com";
             conn_string.Port = 3306;
             conn_string.UserID = "analyzer";
             conn_string.Password = "EKsDhW0FPoSt8A7D";
