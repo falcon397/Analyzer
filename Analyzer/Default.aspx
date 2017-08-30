@@ -17,9 +17,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
 
-
-    <script src="script/bootstrap.min.js"></script>
     <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="script/bootstrap.min.js"></script>
     <script src="script/javascript.js"></script>
 </head>
 <body>
@@ -32,7 +31,9 @@
                 <input id="inFile" type="file" onchange="GetCSVFile(event)" />
             </div>
             <div id="pnlUpdate" class="form-group">
-                <output id="outValues" class="buffer"></output>
+                <table id="tblData" class="table table-striped table-bordered" cellspacing="0" width="100%">
+
+                </table>
             </div>
             <%--<button type="button" onclick="GetAppData()">Check for Data</button>--%>
         </div>

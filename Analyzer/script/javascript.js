@@ -14,60 +14,62 @@ $(document).ready(function () {
         return false;
     });
 
-    $.ajax({
-        type: "POST",
-        url: "Default.aspx/GetData",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //$.ajax({
+    //    type: "POST",
+    //    url: "Default.aspx/GetData",
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    error: function (XMLHttpRequest, textStatus, errorThrown) {
 
-            //Mark error and log info in the console, and populate the error field.
-            console.error("Error Thrown: " + errorThrown);
-            console.error("Text Status: " + textStatus)
-            console.log(XMLHttpRequest);
-            $('#lblError').text(errorThrown);
+    //        //Mark error and log info in the console, and populate the error field.
+    //        console.error("Error Thrown: " + errorThrown);
+    //        console.error("Text Status: " + textStatus)
+    //        console.log(XMLHttpRequest);
+    //        $('#lblError').text(errorThrown);
 
-            //Process visibility or error.
-            OnError()
-        },
-        success: function (response) {
-            //Process visibility of error and charts.
-            OnSuccess(response)
-        }
-    });
+    //        //Process visibility or error.
+    //        OnError()
+    //    },
+    //    success: function (response) {
+    //        //Process visibility of error and charts.
+    //        OnSuccess(response)
+    //    }
+    //});
 });
 
 //Get the data with AJAX call.
 function GetCSVFile(event) {
+
     //Get file and initialize file reader.
     var fileInput = document.getElementById('inFile');
-    var reader = new FileReader()
+    var reader = new FileReader();
+    var body = [];
+    var header = [];
 
     //On loading the file reader build the table.
     reader.onload = function () {
-        var html = '<table id="tblData" class="display"><thead>';
         var rows = reader.result.toString().split("\n");
-        rows.forEach(function getValues(row, i) {
-            var columns = row.split(",");
-            for (j = 0; j < columns.length; j++)
-                html += i == 0 ? '<td>' + toTitleCase(columns[j]) + '</td>' : '<td>' + columns[j] + '</td>';
-            html += i == 0 ?'</tr></thead><tbody>':'</tr>';
-        });
-        html += "</tbody></table>";
 
-        //Empty and append the new data into the update field.
-        $('#pnlUpdate').empty();
-        $('#pnlUpdate').append(html);
+        rows.forEach(function getRows(row, i) {
+            var columns = row.split(",");
+            if (i == 0)
+                columns.forEach(function getColumns(col) {
+                    header.push(col);
+                })
+
+            else
+                body.push(columns);
+        });
+
+        $("#tblData").DataTable();
     }
 
     //Execute the reader and make the table a data table from the datatable plugin.
     reader.readAsBinaryString(fileInput.files[0]);
-    $('#tblData').DataTable();
 }
 
 //Some fields have characters that don't allow for proper formatting, this is a running list of things that shouldn't be in the data.
-function toTitleCase(str)
-{
+function toTitleCase(str) {
     return str.replace(/_/g, " ").replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 }
 
@@ -76,38 +78,38 @@ function toTitleCase(str)
 
 //}
 
-function OnSuccess(response) {
-    if ($('#pnlError').is(':visible'))
-        $('#pnlError').fadeOut(400);
+//function OnSuccess(response) {
+//    if ($('#pnlError').is(':visible'))
+//        $('#pnlError').fadeOut(400);
 
-    if ($("#pnlUpdate").is(":visible")) {
-        $('#pnlUpdate').slideUp(400);
-        window.setTimeout(function () {
-            setData(response);
-        }, 650);
-    }
+//    if ($("#pnlUpdate").is(":visible")) {
+//        $('#pnlUpdate').slideUp(400);
+//        window.setTimeout(function () {
+//            setData(response);
+//        }, 650);
+//    }
 
-    else
-        setData(response);
-}
+//    else
+//        setData(response);
+//}
 
-function setData(response) {
-    var status = response.d.split(" || ");
-    $('#lblStatus').text(status[0]);
-    if (status.length > 1)
-        $('#lblDefinition').text(status[1]);
-    $('#pnlUpdate').fadeIn("slow");
-}
+//function setData(response) {
+//    var status = response.d.split(" || ");
+//    $('#lblStatus').text(status[0]);
+//    if (status.length > 1)
+//        $('#lblDefinition').text(status[1]);
+//    $('#pnlUpdate').fadeIn("slow");
+//}
 
-function OnError(errorThrown) {
-    if ($("#pnlError").is(":visible")) {
-        $('#pnlError').slideUp(400);
-        window.setTimeout(function () {
-            $('#pnlError').fadeIn("slow");
-        }, 650);
-    }
+//function OnError(errorThrown) {
+//    if ($("#pnlError").is(":visible")) {
+//        $('#pnlError').slideUp(400);
+//        window.setTimeout(function () {
+//            $('#pnlError').fadeIn("slow");
+//        }, 650);
+//    }
 
-    else {
-        $('#pnlError').fadeIn("slow");
-    }
-}
+//    else {
+//        $('#pnlError').fadeIn("slow");
+//    }
+//}
