@@ -30,8 +30,7 @@
             </div>
             <div id="pnlUpdate">
             </div>
-        </div>
-        <button type="button" onclick="GetAppData()">Check for Data</button>
+            <button type="button" onclick="GetAppData()">Check for Data</button>
         </div>
     </form>
 </body>

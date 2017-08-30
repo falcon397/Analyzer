@@ -4,12 +4,9 @@ $(document).ready(function () {
     //Hide fields that don't show until the user does something.
     //jQuery loads after the page, so I have to hide stuff with CSS, then with jQuery, then remove the CSS rule.
     //There's probably a better way...
-    $('#jQueryUpdate').hide();
-    $('#lblError').hide();
-    $('#lblError').removeClass('hidden');
-
-    //Get date and set messages and input masks.
-    var d = new Date().toLocaleDateString();
+    $('#pnlUpdate').hide();
+    $('#pnlError').hide();
+    $('#pnlError').removeClass('hidden');
 
     //Disable form submit, this page solely relies on AJAX calls and JSON data, with jQuery updating the fields.
     $('#Form1').submit(function () {
@@ -19,27 +16,38 @@ $(document).ready(function () {
 
 //Get the data with AJAX call.
 function GetAppData() {
+
     var remoteURL = "https://www.nastyfans.org/buys.csv";
+
     $.ajax({
-        type: "GET",
-        url: "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22" +
-            encodeURIComponent(remoteURL) + "%22&format=json",
-        dataType: "text/csv",
+        type: "POST",
+        url: "Default.aspx/GetData",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
         error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+            //Mark error and log info in the console, and populate the error field.
+            console.error("Error Thrown: " + errorThrown);
+            console.error("Text Status: "+ textStatus)
+            console.log(XMLHttpRequest);
+            $('#lblError').text(errorThrown);
+
+            //Process visibility or error.
             OnError()
         },
         success: function (response) {
+            //Process visibility of error and charts.
             OnSuccess(response)
         }
     });
 }
 
 function OnSuccess(response) {
-    if ($('#lblError').is(':visible'))
-        $('#lblError').fadeOut(400);
+    if ($('#pnlError').is(':visible'))
+        $('#pnlError').fadeOut(400);
 
-    if ($("#jQueryUpdate").is(":visible")) {
-        $('#jQueryUpdate').slideUp(400);
+    if ($("#pnlUpdate").is(":visible")) {
+        $('#pnlUpdate').slideUp(400);
         window.setTimeout(function () {
             setData(response);
         }, 650);
@@ -54,18 +62,18 @@ function setData(response) {
     $('#lblStatus').text(status[0]);
     if (status.length > 1)
         $('#lblDefinition').text(status[1]);
-    $('#jQueryUpdate').fadeIn("slow");
+    $('#pnlUpdate').fadeIn("slow");
 }
 
-function OnError() {
+function OnError(errorThrown) {
     if ($("#pnlError").is(":visible")) {
         $('#pnlError').slideUp(400);
         window.setTimeout(function () {
-            $('#lblError').fadeIn("slow");
+            $('#pnlError').fadeIn("slow");
         }, 650);
     }
 
     else {
-        $('#lblError').fadeIn("slow");
+        $('#pnlError').fadeIn("slow");
     }
 }
