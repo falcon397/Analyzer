@@ -6,18 +6,15 @@
 <head runat="server">
     <title>Market Analyzer</title>
 
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
-    <link rel="stylesheet" href="style/bootstrap.min.css" />
+    <%-- CSS --%>
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="style/bootstrap.min.css" />
     <link rel="stylesheet" href="style/style.css" />
 
-    <%-- Hosted Libraries --%>
+    <%-- Scripts --%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-
-    <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
     <script src="script/bootstrap.min.js"></script>
     <script src="script/javascript.js"></script>
 </head>
@@ -29,11 +26,21 @@
             </div>
             <div class="form-group">
                 <label id="lblInFile"></label>
-                <input id="inFile" type="file" onchange="GetCSVFile(event)" />
+                <input id="inFile" type="file" onchange="uploadCSV(event)" />
             </div>
             <div id="pnlUpdate" class="form-group">
-                <table id="tblData" class="table table-striped table-bordered">
-
+                <table id="tblTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr></tr>
+                    </tbody>
                 </table>
             </div>
             <%--<button type="button" onclick="GetAppData()">Check for Data</button>--%>
