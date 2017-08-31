@@ -28,10 +28,11 @@
                 <label id="lblError"></label>
             </div>
             <div class="form-group">
+                <label id="lblInFile"></label>
                 <input id="inFile" type="file" onchange="GetCSVFile(event)" />
             </div>
             <div id="pnlUpdate" class="form-group">
-                <table id="tblData" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <table id="tblData" class="table table-striped table-bordered">
 
                 </table>
             </div>
