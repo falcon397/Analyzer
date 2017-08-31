@@ -43,10 +43,11 @@ function getData() {
 //Pull data from CSV file.
 function uploadCSV(event) {
     //Get file and initialize file reader.
-    var file = document.getElementById('inFile'); //event.target.files[0];
+    var file = event.target.files[0]; //event.target.files[0];
     var reader = new FileReader();
     var dsHeadData = []
     var dsTableData = [];
+    reader.readAsBinaryString(file);
 
     //On loading the file reader build the table.
     reader.onload = function () {
@@ -54,21 +55,22 @@ function uploadCSV(event) {
         rows.forEach(function sortData(row, index) {
             var columns = row.split(",");
             var dsTemp = [];
+            if (index < 10) {
+                for (j = 0; j < columns.length; j++)
+                    dsTemp.push({ title: "'" + cleanData(columns[j]) + "'" });
 
-            for (j = 0; j < columns.length; j++)
-                dsTemp.push(cleanData(columns[j]))
-
-            if (index > 0)
-                dsTableData.push(dsTemp);
-            else
-                dsHeadData.push(dsTemp);
+                if (index > 0)
+                    dsTableData.push(dsTemp);
+                else
+                    dsHeadData.push(dsTemp);
+            }
         })
     }
 
-    reader.readAsBinaryString(file.files[0]);
+    
     $('#tblTable').dataTable({
-        "data": dsTableData,
-        "header": dsHeadData
+        data: dsTableData,
+        columns: dsHeadData
     });
 }
 
