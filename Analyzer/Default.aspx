@@ -29,9 +29,6 @@
                 <table id="tblTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,7 +36,7 @@
                     </tbody>
                 </table>
             </div>
-            <button type="button" onclick="getData('GetBuysData')">Check for Data</button>
+            <button type="button" onclick="getData('getBuys')">Check for Data</button>
         </div>
     </form>
 </body>

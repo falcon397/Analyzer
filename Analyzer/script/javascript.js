@@ -37,7 +37,7 @@ function createCORSRequest(method, url) {
 
 //Response handler for success.
 function OnSuccess(data) {
-    var objJSON = JSON.parse(JSON.parse(this.responseText).GetBuysDataResult);
+    var objJSON = JSON.parse(JSON.parse(this.responseText).getBuysResult);
     var dsTable = [];
     var dsHead = [];
 
@@ -67,6 +67,14 @@ function OnError(errorThrown) {
 }
 
 function updateDataTable(dsTable, dsHead) {
+
+    var tr = document.getElementById('tblTable').tHead.children[0],
+    th = document.createElement('th');
+
+    var count = document.getElementById('tblTable').rows[0].cells.length;
+    for (i = 0; i < count; i++)
+        $(tr).add(th);
+
     $('#tblTable').dataTable({
         data: dsTable,
         columns: dsHead
