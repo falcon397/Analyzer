@@ -17,27 +17,40 @@ $(document).ready(function () {
 
 //Get the data with AJAX call.
 function getData() {
-    $.ajax({
-        type: "POST",
-        url: "Default.aspx/GetData",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
+    var url = 'http://huckshome.com:8080/projects/WCFNastyFans/NastyFanService.svc/GetBuysData';
+    var xhr = createCORSRequest('POST', url);
 
-            //Mark error and log info in the console, and populate the error field.
-            console.error("Error Thrown: " + errorThrown);
-            console.error("Text Status: " + textStatus)
-            console.log(XMLHttpRequest);
-            $('#lblError').text(errorThrown);
+    if (!xhr) {
+        alert('CORS not supported');
+        return;
+    }
 
-            //Process visibility or error.
-            OnError()
-        },
-        success: function (response) {
-            //Process visibility of error and charts.
-            OnSuccess(response)
-        }
-    });
+    // Response handlers.
+    xhr.onload = function () {
+        OnSuccess(xhr.response);
+    };
+
+    xhr.onerror = function () {
+        OnError(errorThrown);
+    };
+
+    xhr.send();
+}
+
+function createCORSRequest(method, url) {
+    var xhr = new XMLHttpRequest();
+    if ("withCredentials" in xhr) {
+        // XHR for Chrome/Firefox/Opera/Safari.
+        xhr.open(method, url, true);
+    } else if (typeof XDomainRequest != "undefined") {
+        // XDomainRequest for IE.
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+    } else {
+        // CORS not supported.
+        xhr = null;
+    }
+    return xhr;
 }
 
 //Pull data from CSV file.
@@ -67,7 +80,7 @@ function uploadCSV(event) {
         })
     }
 
-    
+
     $('#tblTable').dataTable({
         data: dsTableData,
         columns: dsHeadData
