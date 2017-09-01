@@ -1,21 +1,30 @@
 ﻿/// <reference path="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" />
 /// <reference path="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js" />
 
+//Globals needed for endpoints.
+var endpoint = ['Buys', 'ActiveMembers', 'ExchangeRate'];
+var num = 0;
+
 //Stuff to do at page load.
 $(document).ready(function () {
     //Disable form submit, this page solely relies on AJAX calls and JSON data, with jQuery updating the fields.
     $('#Form1').submit(function () {
         return false;
     });
+
+    getData();
 });
 
 //Get the data with XHR call.
-function getData(service) {
-    var url = 'http://huckshome.com:8080/projects/WCFNastyFans/NastyFanService.svc/' + service;
-    var xhr = createCORSRequest('POST', url);
-    xhr.onload = OnSuccess;
-    xhr.onerror = OnError;
-    xhr.send();
+function getData() {
+    //Give the name of the HTML table, match it up with the service request for data.
+    endpoint.forEach(function fillTables(index) {
+        var url = 'http://huckshome.com:8080/projects/WCFNastyFans/NastyFanService.svc/get' + index;
+        var xhr = createCORSRequest('POST', url);
+        xhr.onload = OnSuccess;
+        xhr.onerror = OnError;
+        xhr.send();
+    });
 }
 
 //Build XHR object
@@ -37,9 +46,14 @@ function createCORSRequest(method, url) {
 
 //Response handler for success.
 function OnSuccess(data) {
-    var objJSON = JSON.parse(JSON.parse(this.responseText).getBuysResult);
+    var objJSON = JSON.parse(this.responseText);
     var dsTable = [];
     var dsHead = [];
+
+    Object.keys(objJSON).forEach(function (key) {
+        var value = objJSON[key];
+        objJSON = JSON.parse(objJSON[key]);
+    });
 
     objJSON.forEach(function (row, index) {
         var tableData = $.map(row, function (value, index) {
@@ -58,7 +72,8 @@ function OnSuccess(data) {
         }
 
     });
-    updateDataTable(dsTable, dsHead);
+
+    updateDataTable(dsTable, dsHead, endpoint);
 }
 
 //Response handler for error.
@@ -66,19 +81,27 @@ function OnError(errorThrown) {
 
 }
 
-function updateDataTable(dsTable, dsHead) {
-
-    var tr = document.getElementById('tblTable').tHead.children[0],
+function updateDataTable(dsTable, dsHead, endpoint) {
+    var elementName = 'tbl' + endpoint[num];
+    num++;
+    var tr = document.getElementById(elementName).tHead.children[0],
     th = document.createElement('th');
 
-    var count = document.getElementById('tblTable').rows[0].cells.length;
+    var count = document.getElementById(elementName).rows[0].cells.length;
     for (i = 0; i < count; i++)
         $(tr).add(th);
 
-    $('#tblTable').dataTable({
+    var table = $('#' + elementName).dataTable({
+        retrieve: true,
         data: dsTable,
         columns: dsHead
     });
+
+    //Initialize the data, otherwise just reset the data.
+    if ($.fn.DataTable.isDataTable('#' + elementName)) {
+        table.fnAddData(dsTable);
+        table.fnDraw();
+    }
 }
 
 //Some fields have characters that don't allow for proper formatting, this is a running list of things that shouldn't be in the data.

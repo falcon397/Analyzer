@@ -22,11 +22,29 @@
     <form id="form1" runat="server" aria-label="form">
         <div id="pnlMain" class="center">
             <div class="form-group">
-<%--                <label id="lblInFile"></label>
+                <%--                <label id="lblInFile"></label>
                 <input id="inFile" type="file" onchange="uploadCSV(event)" aria-label="inFile" />--%>
             </div>
             <div id="pnlUpdate" class="form-group">
-                <table id="tblTable" class="table table-striped table-bordered">
+                <table id="tblBuys" class="display table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr></tr>
+                    </tbody>
+                </table><br style="clear: both"/>
+                <table id="tblActiveMembers" class="display table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr></tr>
+                    </tbody>
+                </table><br style="clear: both"/>
+                <table id="tblExchangeRate" class="display table table-striped table-bordered">
                     <thead>
                         <tr>
                         </tr>
@@ -36,7 +54,12 @@
                     </tbody>
                 </table>
             </div>
-            <button type="button" onclick="getData('getBuys')">Check for Data</button>
+<%--            <select name="ddlDataPoint" id="ddlDataPoint" onchange="getData()">
+                <option selected="selected">Select a data point</option>
+                <option value="getActiveMembers">Active Members</option>
+                <option value="getBuys">Buys</option>
+                <option value="getExchangeRate">Exchange Rate</option>
+            </select>--%>
         </div>
     </form>
 </body>
