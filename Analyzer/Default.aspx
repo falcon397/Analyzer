@@ -21,9 +21,6 @@
 <body>
     <form id="form1" runat="server" aria-label="form">
         <div id="pnlMain" class="center">
-            <div id="pnlError" class="hidden form-group">
-                <label id="lblError"></label>
-            </div>
             <div class="form-group">
                 <label id="lblInFile"></label>
                 <input id="inFile" type="file" onchange="uploadCSV(event)" aria-label="inFile" />
@@ -35,7 +32,6 @@
                             <th></th>
                             <th></th>
                             <th></th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,7 +39,7 @@
                     </tbody>
                 </table>
             </div>
-            <button type="button" onclick="getData()">Check for Data</button>
+            <button type="button" onclick="getData('GetBuysData')">Check for Data</button>
         </div>
     </form>
 </body>

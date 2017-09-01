@@ -15,25 +15,40 @@ $(document).ready(function () {
     });
 });
 
-//Get the data with AJAX call.
-function getData() {
-    var url = 'http://huckshome.com:8080/projects/WCFNastyFans/NastyFanService.svc/GetBuysData';
-    var xhr = createCORSRequest('POST', url);
+//Pull data from CSV file.
+function uploadCSV(event) {
+    //Get file and initialize file reader.
+    var file = event.target.files[0];
+    var reader = new FileReader();
+    var dsHead = [];
+    var dsTable = [];
+    reader.readAsBinaryString(file);
 
-    if (!xhr) {
-        alert('CORS not supported');
-        return;
+    //On loading the file reader build the table.
+    reader.onload = function () {
+        var rows = reader.result.toString().split("\n");
+        rows.forEach(function sortData(row, index) {
+            var columns = row.split(",");
+            var dsTemp = [];
+            if (index < 10) {
+                for (j = 0; j < columns.length; j++)
+                    dsTemp.push({ title: "'" + cleanData(columns[j]) + "'" });
+
+                if (index > 0)
+                    dsTable.push(dsTemp);
+                else
+                    dsHead.push(dsTemp);
+            }
+        });
+        updateDataTable(dsTable, dsHead)
     }
+}
 
-    // Response handlers.
-    xhr.onload = function () {
-        OnSuccess(xhr.response);
-    };
-
-    xhr.onerror = function () {
-        OnError(errorThrown);
-    };
-
+//Get the data with AJAX call.
+function getData(service) {
+    var url = 'http://huckshome.com:8080/projects/WCFNastyFans/NastyFanService.svc/' + service;
+    var xhr = createCORSRequest('POST', url);
+    xhr.onload = OnSuccess;
     xhr.send();
 }
 
@@ -53,37 +68,10 @@ function createCORSRequest(method, url) {
     return xhr;
 }
 
-//Pull data from CSV file.
-function uploadCSV(event) {
-    //Get file and initialize file reader.
-    var file = event.target.files[0]; //event.target.files[0];
-    var reader = new FileReader();
-    var dsHeadData = []
-    var dsTableData = [];
-    reader.readAsBinaryString(file);
-
-    //On loading the file reader build the table.
-    reader.onload = function () {
-        var rows = reader.result.toString().split("\n");
-        rows.forEach(function sortData(row, index) {
-            var columns = row.split(",");
-            var dsTemp = [];
-            if (index < 10) {
-                for (j = 0; j < columns.length; j++)
-                    dsTemp.push({ title: "'" + cleanData(columns[j]) + "'" });
-
-                if (index > 0)
-                    dsTableData.push(dsTemp);
-                else
-                    dsHeadData.push(dsTemp);
-            }
-        })
-    }
-
-
+function updateDataTable(dsTable, dsHead) {
     $('#tblTable').dataTable({
-        data: dsTableData,
-        columns: dsHeadData
+        data: dsTable,
+        columns: dsHead
     });
 }
 
@@ -92,39 +80,34 @@ function cleanData(str) {
     return str.replace(/_/g, " ").replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 }
 
+//Response handler for success.
+function OnSuccess(data) {
+    var objTemp = JSON.parse(this.responseText);
+    var objJSON = JSON.parse(objTemp.GetBuysDataResult);
+    var dsTable = [];
+    var dsHead = [];
 
-function OnSuccess(response) {
-    if ($('#pnlError').is(':visible'))
-        $('#pnlError').fadeOut(400);
+    objJSON.forEach(function (row, index) {
+        var tableData = $.map(row, function (value, index) {
+            return [value];
+        });
 
-    if ($("#pnlUpdate").is(":visible")) {
-        $('#pnlUpdate').slideUp(400);
-        window.setTimeout(function () {
-            setData(response);
-        }, 650);
-    }
+        dsTable.push(tableData);
 
-    else
-        setData(response);
+        if (index == 0) {
+            var headData = $.map(row, function (value, index) {
+                return [index];
+            });
+
+            for (i = 0; i < headData.length; i++)
+                dsHead.push({ title: headData[i].toString() });
+        }
+
+    });
+    updateDataTable(dsTable, dsHead);
 }
 
-function setData(response) {
-    var status = response.d.split(" || ");
-    $('#lblStatus').text(status[0]);
-    if (status.length > 1)
-        $('#lblDefinition').text(status[1]);
-    $('#pnlUpdate').fadeIn("slow");
-}
-
+//Response handler for error.
 function OnError(errorThrown) {
-    if ($("#pnlError").is(":visible")) {
-        $('#pnlError').slideUp(400);
-        window.setTimeout(function () {
-            $('#pnlError').fadeIn("slow");
-        }, 650);
-    }
 
-    else {
-        $('#pnlError').fadeIn("slow");
-    }
 }
