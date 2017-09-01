@@ -22,8 +22,8 @@
     <form id="form1" runat="server" aria-label="form">
         <div id="pnlMain" class="center">
             <div class="form-group">
-                <label id="lblInFile"></label>
-                <input id="inFile" type="file" onchange="uploadCSV(event)" aria-label="inFile" />
+<%--                <label id="lblInFile"></label>
+                <input id="inFile" type="file" onchange="uploadCSV(event)" aria-label="inFile" />--%>
             </div>
             <div id="pnlUpdate" class="form-group">
                 <table id="tblTable" class="table table-striped table-bordered">
