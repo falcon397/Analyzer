@@ -12,6 +12,7 @@ $(document).ready(function () {
         return false;
     });
 
+    //This function would be appended to a button or drop down list in a real implementation.
     getData();
 });
 
@@ -46,15 +47,19 @@ function createCORSRequest(method, url) {
 
 //Response handler for success.
 function OnSuccess(data) {
+
+    //Parse JSON object and separate heading data from table data
     var objJSON = JSON.parse(this.responseText);
     var dsTable = [];
     var dsHead = [];
 
+    //Get heading names
     Object.keys(objJSON).forEach(function (key) {
         var value = objJSON[key];
         objJSON = JSON.parse(objJSON[key]);
     });
 
+    //Get table data
     objJSON.forEach(function (row, index) {
         var tableData = $.map(row, function (value, index) {
             return [value];
@@ -73,6 +78,7 @@ function OnSuccess(data) {
 
     });
 
+    //Pass lists for building of tables.
     updateDataTable(dsTable, dsHead, endpoint);
 }
 
@@ -81,15 +87,21 @@ function OnError(errorThrown) {
 
 }
 
+//Append table to page and update it.
 function updateDataTable(dsTable, dsHead, endpoint) {
+    //Set table name to endpoint name and iterate through endpoint list
     var elementName = 'tbl' + endpoint[num];
+    var tableHTML = `<table id="`+ elementName +`" class="display table table-striped table-bordered">` +
+                `<thead>` +
+                    `<tr>` +
+                    `</tr>` +
+                `</thead>` +
+                `<tbody>` +
+                    `<tr></tr>` +
+                `</tbody>` +
+            `</table><br style="clear: both"/>`
+    $("#pnlUpdate").append(tableHTML);
     num++;
-    var tr = document.getElementById(elementName).tHead.children[0],
-    th = document.createElement('th');
-
-    var count = document.getElementById(elementName).rows[0].cells.length;
-    for (i = 0; i < count; i++)
-        $(tr).add(th);
 
     var table = $('#' + elementName).dataTable({
         retrieve: true,
