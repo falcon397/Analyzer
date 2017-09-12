@@ -5,6 +5,7 @@
 var tableEndPoint = ['Buys', 'ActiveMembers', 'ExchangeRate'];
 var chartEndPoint = [];
 var num = 0;
+var urlNastyFans = 'http://huckshome.com:8080/projects/WCFNastyFans/NastyFanService.svc/get';
 
 //Stuff to do at page load.
 $(document).ready(function () {
@@ -19,8 +20,7 @@ $(document).ready(function () {
 //Call listening service for data then update tables with data.
 function getTableData(endpoint) {
     tableEndPoint.forEach(function (index) {
-        var url = 'http://huckshome.com:8080/projects/WCFNastyFans/NastyFanService.svc/get' + index;
-        var xhr = createCORSRequest('POST', url);
+        var xhr = createCORSRequest('POST', urlNastyFans + index);
         xhr.onload = function (data) {
             updateDataTable(data.target.response, index);
         }
@@ -31,8 +31,7 @@ function getTableData(endpoint) {
 
 function getChartData(endpoint) {
     chartEndPoint.forEach(function (index) {
-        var url = 'http://huckshome.com:8080/projects/WCFNastyFans/NastyFanService.svc/get' + index;
-        var xhr = createCORSRequest('POST', url);
+        var xhr = createCORSRequest('POST', urlNastyFans + index);
         xhr.onload = function (data) {
             updateChart(data.target.response, index);
         }
