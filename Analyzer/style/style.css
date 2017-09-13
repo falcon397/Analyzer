@@ -11,3 +11,11 @@
 .buffer {
     margin: 25px 0px;
 }
+
+.maxHeight400 {
+    max-height: 400px;
+}
+
+.maxWidth800 {
+    max-width: 800px;
+}

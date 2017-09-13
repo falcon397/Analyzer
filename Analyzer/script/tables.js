@@ -2,8 +2,7 @@
 /// <reference path="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.js" />
 
 //Globals needed for endpoints.
-var tableEndPoint = ['Buys', 'ActiveMembers', 'ExchangeRate'];
-var chartEndPoint = [];
+var endPoint = ['Buys', 'ActiveMembers', 'ExchangeRate'];
 var num = 0;
 var urlNastyFans = 'http://huckshome.com:8080/projects/WCFNastyFans/NastyFanService.svc/get';
 
@@ -13,27 +12,15 @@ $(document).ready(function () {
     $('#Form1').submit(function () { return false; });
 
     //Main Functions
-    getTableData();
-    getChartData();
+    getData();
 });
 
 //Call listening service for data then update tables with data.
-function getTableData(endpoint) {
-    tableEndPoint.forEach(function (index) {
+function getData() {
+    endPoint.forEach(function (index) {
         var xhr = createCORSRequest('POST', urlNastyFans + index);
         xhr.onload = function (data) {
             updateDataTable(data.target.response, index);
-        }
-        xhr.onerror = OnError;
-        xhr.send();
-    });
-}
-
-function getChartData(endpoint) {
-    chartEndPoint.forEach(function (index) {
-        var xhr = createCORSRequest('POST', urlNastyFans + index);
-        xhr.onload = function (data) {
-            updateChart(data.target.response, index);
         }
         xhr.onerror = OnError;
         xhr.send();

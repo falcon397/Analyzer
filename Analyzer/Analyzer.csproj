@@ -66,22 +66,17 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Default.aspx" />
+    <Content Include="graph.html" />
+    <Content Include="script\graph.js" />
     <Content Include="script\bootstrap.min.js" />
-    <Content Include="script\javascript.js" />
+    <Content Include="script\tables.js" />
     <Content Include="script\jquery.inputmask.bundle.js" />
     <Content Include="style\bootstrap.min.css" />
     <Content Include="style\style.css" />
+    <Content Include="tables.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
