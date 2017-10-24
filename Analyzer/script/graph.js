@@ -1,10 +1,11 @@
 ﻿/// <reference path="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" />
 /// <reference path="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js" />
 
-var endPoint = [];
+var endPoint = ["Trades", "Dividends"];
+var urlNastyFans = 'http://huckshome.com:8080/projects/WCFNastyFans/NastyFanService.svc/get';
 
 $(document).ready(function () {
-    getData();
+    OnSuccess("", "");
 });
 
 //Call listening service for data then update tables with data.
@@ -14,7 +15,7 @@ function getData() {
         xhr.onload = function (data) {
             OnSuccess(data.target.response, index);
         }
-        xhr.onerror = OnError;
+        xhr.onerror = OnError(index);
         xhr.send();
     });
 }
@@ -34,6 +35,10 @@ function createCORSRequest(method, url) {
         xhr = null;
     }
     return xhr;
+}
+
+function OnError(index) {
+    console.log("An error has occured fetching the data from "+ index)
 }
 
 function OnSuccess(data, endpoint) {

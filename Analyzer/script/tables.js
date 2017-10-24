@@ -3,7 +3,6 @@
 
 //Globals needed for endpoints.
 var endPoint = ['Buys', 'ActiveMembers', 'ExchangeRate'];
-var num = 0;
 var urlNastyFans = 'http://huckshome.com:8080/projects/WCFNastyFans/NastyFanService.svc/get';
 
 //Stuff to do at page load.
